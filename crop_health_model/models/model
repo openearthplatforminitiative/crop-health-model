@@ -1,0 +1,27 @@
+import torch.nn as nn
+import torch.nn.functional as F
+from torchvision import models
+
+class ResNet(nn.Module):
+
+    def __init__(self, num_classes, num_layers, pretrained=True):
+        super(self).__init__()
+
+        if num_layers == 18:
+            self.resnet = models.resnet18(pretrained=pretrained)
+        elif num_layers == 34:
+            self.resnet = models.resnet34(pretrained=pretrained)
+        elif num_layers == 50:
+            self.resnet = models.resnet50(pretrained=pretrained)
+        elif num_layers == 101:
+            self.resnet = models.resnet101(pretrained=pretrained)
+        elif num_layers == 152:
+            self.resnet = models.resnet152(pretrained=pretrained)
+        else:
+            raise ValueError('Invalid number of layers: {}'.format(num_layers))
+        
+        # Replace the last fully connected layer of the model
+        self.resnet.fc = nn.Linear(self.resnet.fc.in_features, num_classes)
+
+    def forward(self, x):
+        return F.log_softmax(self.resnet(x), dim=-1)
