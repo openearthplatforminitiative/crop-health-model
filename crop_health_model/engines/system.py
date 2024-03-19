@@ -16,7 +16,7 @@ class LitModel(pl.LightningModule):
 
     def forward(self, x):
         return self.model(x)
-    
+
     def _compute_loss(self, logits, y):
         if self.num_classes == 2:
             return F.binary_cross_entropy_with_logits(logits, y)
