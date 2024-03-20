@@ -1,10 +1,12 @@
 spectrometry_cassava_dataset = {
-    "ids": [("7101239", "Field Experiment.part1.rar"), 
-            ("7101240", "Field Experiment.part2.rar"), 
-            ("7101238", "Field Experiment.part3.rar"), 
-            ("7101244", "ScreenHouse Experiment.part1.rar"), 
-            ("7101243", "ScreenHouse Experiment.part2.rar"), 
-            ("7101245", "ScreenHouse Experiment.part3.rar"),],
+    "ids": [
+        ("7101239", "Field Experiment.part1.rar"),
+        ("7101240", "Field Experiment.part2.rar"),
+        ("7101238", "Field Experiment.part3.rar"),
+        ("7101244", "ScreenHouse Experiment.part1.rar"),
+        ("7101243", "ScreenHouse Experiment.part2.rar"),
+        ("7101245", "ScreenHouse Experiment.part3.rar"),
+    ],
     "folder": "spectrometry-cassava-dataset",
     "crop_type": "cassava",
     "classes": [
@@ -28,7 +30,7 @@ cassava_dataset_uganda = {
         ("6419152", "cmd_002.rar"),
         ("6419151", "cmd_003.rar"),
         ("6420454", "cmd_004.rar"),
-        ("6420455", "cmd_005.rar"), 
+        ("6420455", "cmd_005.rar"),
         ("6419125", "healthy_001.rar"),
         ("6419126", "healthy_002.rar"),
     ],
@@ -48,25 +50,25 @@ cassava_dataset_uganda = {
 }
 
 maize_dataset_tanzania = {
-    "ids": [("6966997", "HEATHLY.zip"),
-            ("6962066", "MLN.zip"), 
-            ("6966998", "MSV_1.zip"),
-            ("6962930", "MSV_2.zip")],
+    "ids": [
+        ("6966997", "HEATHLY.zip"),
+        ("6962066", "MLN.zip"),
+        ("6966998", "MSV_1.zip"),
+        ("6962930", "MSV_2.zip"),
+    ],
     "folder": "maize-dataset-tanzania",
     "crop_type": "maize",
     "classes": [
         {"raw": "MLN", "clean": "MLN", "full": "Maize Lethal Necrosis", "count": 5068},
         {"raw": "MSV", "clean": "MSV", "full": "Maize Streak Virus", "count": 6667},
-        {"raw": "HEALTHY", "clean": "HLT", "full": "Healthy", "count": 5542},
+        {"raw": "HEATHLY", "clean": "HLT", "full": "Healthy", "count": 5542},
     ],
     "total_image_count": 17277,
 }
 
 maize_dataset_namibia = {
-    "ids": [("6367418", "FAW.rar"), 
-            ("6367417", "healthy.rar"), 
-            ("6367413", "MSV.rar")],
-    "folder": "maize-dataset-tanzania",
+    "ids": [("6367418", "FAW.rar"), ("6367417", "healthy.rar"), ("6367413", "MSV.rar")],
+    "folder": "maize-dataset-namibia",
     "crop_type": "maize",
     "classes": [
         {"raw": "FAW", "clean": "FAW", "full": "Fall Armyworm", "count": 3414},
@@ -77,12 +79,14 @@ maize_dataset_namibia = {
 }
 
 maize_dataset_uganda = {
-    "ids": [("6045938", "Healthy_1.rar"), 
-            ("6045939", "Healthy_2.rar"), 
-            ("6284851", "MLB_1.rar"), 
-            ("6284853", "MLB_2.rar"), 
-            ("6299680", "MSV_1.rar"), 
-            ("6299689", "MSV_2.rar")],
+    "ids": [
+        ("6045938", "Healthy_1.rar"),
+        ("6045939", "Healthy_2.rar"),
+        ("6284851", "MLB_1.rar"),
+        ("6284853", "MLB_2.rar"),
+        ("6299680", "MSV_1.rar"),
+        ("6299689", "MSV_2.rar"),
+    ],
     "folder": "maize-dataset-uganda",
     "crop_type": "maize",
     "classes": [
@@ -94,12 +98,14 @@ maize_dataset_uganda = {
 }
 
 beans_dataset_uganda = {
-    "ids": [("5857998", "als_1.zip "), 
-            ("5858001", "als_2.zip"), 
-            ("5857999", "bean_rust_1.zip"), 
-            ("5858000", "bean_rust_2.zip"), 
-            ("5741405", "healthy_1.zip"), 
-            ("5741402", "healthy_2.zip")],
+    "ids": [
+        ("5857998", "als_1.zip"),
+        ("5858001", "als_2.zip"),
+        ("5857999", "bean_rust_1.zip"),
+        ("5858000", "bean_rust_2.zip"),
+        ("5741405", "healthy_1.zip"),
+        ("5741402", "healthy_2.zip"),
+    ],
     "folder": "beans-dataset-uganda",
     "crop_type": "beans",
     "classes": [
@@ -111,12 +117,14 @@ beans_dataset_uganda = {
 }
 
 bananas_dataset_tanzania = {
-    "ids": [("7071415", "BLACK SIGATOKA_1.zip"), 
-            ("6078711", "BLACK SIGATOKA_2.zip"),
-            ("7071416", "FUSARIUM WILT_1.zip"), 
-            ("7077487", "FUSARIUM WILT_2.zip"), 
-            ("7077478", "HEALTHY_1.zip"), 
-            ("7077403", "HEALTHY_2.zip")],
+    "ids": [
+        ("7071415", "BLACK SIGATOKA_1.zip"),
+        ("6078711", "BLACK SIGATOKA_2.zip"),
+        ("7071416", "FUSARIUM WILT_1.zip"),
+        ("7077487", "FUSARIUM WILT_2.zip"),
+        ("7077478", "HEALTHY_1.zip"),
+        ("7077403", "HEALTHY_2.zip"),
+    ],
     "folder": "bananas-dataset-tanzania",
     "crop_type": "bananas",
     "classes": [
