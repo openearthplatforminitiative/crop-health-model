@@ -4,10 +4,10 @@ fit:
       class_path: crop_health_model.models.model.ResNet
       init_args:
         weights: "DEFAULT"
-        num_classes: 2
+        num_classes: 13
   data:
     batch_size: 32
-    data_dir: crop_health_model/.data
+    data_dir: .data
     annotations_file: annotations.csv
     mean:
     - 0.485
@@ -23,4 +23,7 @@ fit:
     data_split:
     - 0.8
     - 0.2
+    limit: 100
+  trainer:
+    max_epochs: 5
   seed_everything: 44

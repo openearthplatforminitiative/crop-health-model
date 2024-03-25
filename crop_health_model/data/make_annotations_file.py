@@ -79,7 +79,7 @@ def generate_all_annotations():
     all_dfs = []
     for dataset in all_datasets:
         img_dir = os.path.join(".data", dataset["folder"])
-        keywords_to_avoid = []
+        keywords_to_avoid = ["MACOSX"]
         annotations_file_path = os.path.join(
             ".data", dataset["folder"], "annotations.csv"
         )

@@ -25,6 +25,7 @@ class ResNet(nn.Module):
 
         # Replace the last fully connected layer of the model
         self.resnet.fc = nn.Linear(self.resnet.fc.in_features, num_classes)
+        self.num_classes = num_classes
 
     def forward(self, x):
         return F.log_softmax(self.resnet(x), dim=-1)

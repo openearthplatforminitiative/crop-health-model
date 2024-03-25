@@ -100,6 +100,8 @@ def extract_all():
     # print current directory
     print(f"current dir: {os.getcwd()}")
     for dataset in all_datasets:
+        if dataset["folder"] != "bananas-dataset-tanzania":
+            continue
         folder = os.path.join(".data", dataset["folder"])
         for file_name in os.listdir(folder):
             # check that file is a file:

@@ -65,6 +65,7 @@ class CropHealthDataModule(pl.LightningDataModule):
             annotations_file=os.path.join(self.data_dir, self.annotations_file),
             img_dir=self.data_dir,
             transform=self.transform,
+            limit=self.limit
         )
 
         # Split dataset into train and test sets

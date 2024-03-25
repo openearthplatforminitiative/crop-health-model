@@ -15,9 +15,9 @@ class LitModel(pl.LightningModule):
         return self.model(x)
 
     def _compute_loss(self, logits, y):
-        # If out_features (num_classes) is 2, use sigmoid and binary cross entropy
+        # If num_classes is 2, use sigmoid and binary cross entropy
         # Otherwise, use log_softmax and negative log likelihood
-        if self.model.fc.out_features == 2:
+        if self.model.num_classes == 2:
             return F.binary_cross_entropy_with_logits(logits, y)
         else:
             log_probs = F.log_softmax(logits, dim=-1)
@@ -30,7 +30,8 @@ class LitModel(pl.LightningModule):
 
         # training metrics
         preds = torch.argmax(logits, dim=-1)
-        acc = accuracy(preds, y)
+        task = "binary" if self.model.num_classes == 2 else "multiclass"
+        acc = accuracy(preds, y, task, num_classes=self.model.num_classes)
         self.log("train_loss", loss, on_step=True, on_epoch=True, logger=True)
         self.log("train_acc", acc, on_step=True, on_epoch=True, logger=True)
         return loss
@@ -54,7 +55,8 @@ class LitModel(pl.LightningModule):
 
         # validation metrics
         preds = torch.argmax(logits, dim=-1)
-        acc = accuracy(preds, y)
+        task = "binary" if self.model.num_classes == 2 else "multiclass"
+        acc = accuracy(preds, y, task, num_classes=self.model.num_classes)
         self.log("val_loss", loss, prog_bar=True)
         self.log("val_acc", acc, prog_bar=True)
         return loss
@@ -70,7 +72,8 @@ class LitModel(pl.LightningModule):
 
         # test metrics
         preds = torch.argmax(logits, dim=-1)
-        acc = accuracy(preds, y)
+        task = "binary" if self.model.num_classes == 2 else "multiclass"
+        acc = accuracy(preds, y, task, num_classes=self.model.num_classes)
         self.log("test_loss", loss, prog_bar=True)
         self.log("test_acc", acc, prog_bar=True)
         return loss
