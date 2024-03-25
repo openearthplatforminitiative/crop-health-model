@@ -65,13 +65,6 @@ async def download_all():
     await asyncio.gather(*tasks)
 
 
-def delete_non_images(folder):
-    for root, dirs, files in os.walk(folder):
-        for file in files:
-            if not file.lower().endswith((".png", ".jpg", ".jpeg")):
-                os.remove(os.path.join(root, file))
-
-
 def extract(file_path):
     folder, filename = os.path.split(file_path)
     # folder = os.path.dirname(file_path)
@@ -122,18 +115,6 @@ def extract_all():
                 continue
             extract(file_path)
 
-        # for root, dirs, files in os.walk(os.path.join(".data", dataset["folder"])):
-        #     print(f"Extracting files in {root}")
-        #     for file in files:
-        #         # Some of the archives are multi-part RAR archives. So if the
-        #         # file contains the substring ".part2.", ".part3.", etc. skip it.
-        #         # But don't skip ".part1.", unarchiving it will unarchive the
-        #         # other parts as well.
-        #         if ".part" in file and not ".part1." in file:
-        #             print(f"Skipping {file}")
-        #             continue
-        #         extract(file, root)
-
 
 def delete_archives():
     for dataset in all_datasets:
@@ -147,4 +128,3 @@ def delete_archives():
 if __name__ == "__main__":
     asyncio.run(download_all())
     extract_all()
-    # delete_non_images(".data")

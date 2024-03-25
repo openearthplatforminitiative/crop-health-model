@@ -7,18 +7,17 @@ from torchmetrics.functional import accuracy
 
 
 class LitModel(pl.LightningModule):
-    def __init__(self, model: nn.Module, num_classes: int):
-        super().__init__()
+    def __init__(self, model: nn.Module):
+        super(LitModel, self).__init__()
         self.model = model
-        # If num_classes is 2, use sigmoid and binary cross entropy
-        # Otherwise, use log_softmax and negative log likelihood
-        self.num_classes = num_classes
 
     def forward(self, x):
         return self.model(x)
 
     def _compute_loss(self, logits, y):
-        if self.num_classes == 2:
+        # If out_features (num_classes) is 2, use sigmoid and binary cross entropy
+        # Otherwise, use log_softmax and negative log likelihood
+        if self.model.fc.out_features == 2:
             return F.binary_cross_entropy_with_logits(logits, y)
         else:
             log_probs = F.log_softmax(logits, dim=-1)
