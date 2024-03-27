@@ -20,6 +20,7 @@ class CropHealthDataModule(pl.LightningDataModule):
         std: tuple | None = None,
         data_split: tuple = (0.8, 0.2),
         limit: int | None = None,
+        num_workers: int = 8,
     ):
         super(CropHealthDataModule, self).__init__()
         self.limit = limit
@@ -27,6 +28,7 @@ class CropHealthDataModule(pl.LightningDataModule):
         self.batch_size = batch_size
         self.annotations_file = annotations_file
         self.data_split = data_split
+        self.num_workers = num_workers
 
         self.resize_size = resize_size
         self.crop_size = crop_size
@@ -65,7 +67,7 @@ class CropHealthDataModule(pl.LightningDataModule):
             annotations_file=os.path.join(self.data_dir, self.annotations_file),
             img_dir=self.data_dir,
             transform=self.transform,
-            limit=self.limit
+            limit=self.limit,
         )
 
         # Split dataset into train and test sets
@@ -87,13 +89,21 @@ class CropHealthDataModule(pl.LightningDataModule):
             self.predict_data = self.test_data
 
     def train_dataloader(self):
-        return DataLoader(self.train_data, batch_size=self.batch_size)
+        return DataLoader(
+            self.train_data, batch_size=self.batch_size, num_workers=self.num_workers
+        )
 
     def val_dataloader(self):
-        return DataLoader(self.val_data, batch_size=self.batch_size)
+        return DataLoader(
+            self.val_data, batch_size=self.batch_size, num_workers=self.num_workers
+        )
 
     def test_dataloader(self):
-        return DataLoader(self.test_data, batch_size=self.batch_size)
+        return DataLoader(
+            self.test_data, batch_size=self.batch_size, num_workers=self.num_workers
+        )
 
     def predict_dataloader(self):
-        return DataLoader(self.predict_data, batch_size=self.batch_size)
+        return DataLoader(
+            self.predict_data, batch_size=self.batch_size, num_workers=self.num_workers
+        )
