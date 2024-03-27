@@ -1,9 +1,8 @@
 import os
 
 import pandas as pd
-from torch.utils.data import Dataset
 from PIL import Image
-
+from torch.utils.data import Dataset
 
 
 class CustomImageDataset(Dataset):
@@ -24,8 +23,8 @@ class CustomImageDataset(Dataset):
         if limit:
             self.img_labels = self.img_labels[:limit]
             print(f"Using only {limit} rows")
-            # print number of distinct classes
-            print(f"Number of distinct classes: {len(self.img_labels['label'].unique())}")
+        # print number of distinct classes
+        print(f"Number of distinct classes: {len(self.img_labels['label'].unique())}")
 
         # Define a mapping from the class labels to integers using the unique method from pandas
         self.class_map = {
@@ -36,11 +35,12 @@ class CustomImageDataset(Dataset):
         return len(self.img_labels)
 
     def __getitem__(self, idx):
-        img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
+        row = self.img_labels.iloc[idx]
+        img_path = os.path.join(self.img_dir, row["image"])
         # open image with PIL
         image = Image.open(img_path)
-        label = self.img_labels.iloc[idx, 1]
-        label = self.class_map[label]
+        label_name = row["label"]
+        label = self.class_map[label_name]
         if self.transform:
             image = self.transform(image)
         if self.target_transform:
