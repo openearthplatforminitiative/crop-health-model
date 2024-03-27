@@ -1,34 +1,57 @@
-import lightning.pytorch as pl
+import math
+
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
-import wandb
-from lightning import Callback
+from lightning.pytorch.callbacks import Callback
 
 
 class ImagePredictionLogger(Callback):
-    def __init__(self, val_samples, num_samples=32):
+    def __init__(self, num_samples=32):
         super().__init__()
         self.num_samples = num_samples
-        self.val_imgs, self.val_labels = val_samples
 
-    def on_validation_epoch_end(
-        self, trainer: pl.Trainer, pl_module: pl.LightningModule
-    ):
-        # Bring the tensors to CPU
-        val_imgs = self.val_imgs.to(device=pl_module.device)
-        val_labels = self.val_labels.to(device=pl_module.device)
+    def on_validation_start(self, trainer, pl_module):
+        val_samples = next(iter(trainer.datamodule.val_dataloader()))
+        val_imgs, val_labels = val_samples[0].to(device=pl_module.device), val_samples[
+            1
+        ].to(device=pl_module.device)
+
         # Get model prediction
         log_probs = pl_module(val_imgs)
         preds = torch.argmax(log_probs, dim=-1)
-        # Log the images as wandb Image
-        trainer.logger.experiment.log(
-            {
-                "examples": [
-                    wandb.Image(x, caption=f"Pred:{pred}, Label:{y}")
-                    for x, pred, y in zip(
-                        val_imgs[: self.num_samples],
-                        preds[: self.num_samples],
-                        val_labels[: self.num_samples],
-                    )
-                ]
-            }
+
+        # Determine grid size
+        num_images = min(self.num_samples, len(val_imgs))
+        num_cols = int(math.sqrt(num_images))
+        num_rows = math.ceil(num_images / num_cols)
+
+        fig, axes = plt.subplots(
+            num_rows, num_cols, figsize=(2 * num_cols, 2 * num_rows)
         )
+        fig.subplots_adjust(hspace=0.3, wspace=0.1)
+
+        for i, ax in enumerate(axes.flatten()):
+            if i < num_images:
+                img = val_imgs[i].cpu().numpy()
+                img = np.transpose(img, (1, 2, 0))
+                img = (img - img.min()) / (img.max() - img.min())  # Normalize to [0, 1]
+                ax.imshow(img)
+                ax.set_title(
+                    f"Pred: {preds[i].item()}, Label: {val_labels[i].item()}",
+                    fontsize=10,
+                )
+                ax.axis("off")
+            else:
+                ax.axis("off")  # Hide unused subplots
+
+        # Use the logger tied to the Trainer
+        if trainer.logger:
+            # This assumes you have a logger that can log matplotlib figures directly.
+            trainer.logger.experiment.add_figure(
+                "Validation Predictions", fig, global_step=trainer.current_epoch
+            )
+
+        plt.close(
+            fig
+        )  # Close the figure after logging to avoid displaying it in the notebook/output
