@@ -24,9 +24,9 @@ fit:
     - 0.8
     - 0.2
     num_workers: 8
-    limit: 1000
+    limit: null
   trainer:
-    max_epochs: 10
+    max_epochs: 25
     devices: 
     - 0
     - 1
