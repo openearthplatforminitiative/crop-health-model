@@ -3,9 +3,21 @@
 import os
 
 import pandas as pd
+import PIL
+from PIL import Image
+from torchvision import transforms
 from tqdm import tqdm
 
 from crop_health_model.data.metadata import all_datasets
+
+transform = transforms.Compose(
+    [
+        transforms.Resize(256, interpolation=transforms.InterpolationMode.BILINEAR),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),  # Converts PIL Image or numpy.ndarray to torch.FloatTensor of shape [C x H x W]
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ]
+)
 
 
 def generate_annotations(
@@ -27,11 +39,26 @@ def generate_annotations(
     # Loop through all the subdirectories in the img_dir
     # But make sure to only add images to the img_paths list
     for root, dirs, files in os.walk(img_dir):
-        for file in files:
+        for file in tqdm(files):
             if file.endswith((".jpg", ".jpeg")) and not any(
                 keyword in root for keyword in keywords_to_avoid
             ):
                 path = os.path.join(root.lstrip(".data/"), file)
+
+                # Try to open the image, if it fails, skip it
+                try:
+                    img = Image.open(os.path.join(".data", path))
+                except PIL.UnidentifiedImageError as e:
+                    print(f"Error opening image: {path}, {e}")
+                    continue
+
+                # Try to apply the transformation, if it fails, skip it
+                try:
+                    img = transform(img)
+                except OSError as e:
+                    print(f"Error transforming image: {path}, {e}")
+                    continue
+
                 img_paths.append(path)
 
                 # Get the label from the directory name
