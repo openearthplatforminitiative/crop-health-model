@@ -3,7 +3,7 @@ from typing import Callable
 
 import pandas as pd
 from PIL import Image
-from torch.utils.data import Dataset, Subset
+from torch.utils.data import Dataset
 
 
 class CropHealthDataset(Dataset):
@@ -68,10 +68,6 @@ class CropHealthDataset(Dataset):
             label = self.target_transform(label)
         return image, label
 
-    def get_class_counts(self) -> dict:
-        """Return the counts of each class in the dataset as a mapping from class index to count."""
-        return self.data_df["label"].map(self.class_map).value_counts().to_dict()
-
 
 class TransformWrapperDataset(Dataset):
     """A dataset that wraps another dataset and applies a transform to the data.
@@ -94,26 +90,3 @@ class TransformWrapperDataset(Dataset):
         if self.transform:
             data = self.transform(data)
         return data, target
-
-    def get_class_counts(self) -> dict:
-        """Return the counts of each class in the dataset as a mapping from class index to count."""
-        # We need to handle the case where the underlying dataset is a subset of another dataset
-        # or a subset of a subset (of a dataset)
-        if isinstance(self.dataset, Subset):
-            original_dataset = self.dataset.dataset
-            if isinstance(original_dataset, Subset):
-                original_dataset = original_dataset.dataset
-            indices = self.dataset.indices
-
-            # Filter the labels using the subset indices
-            filtered_labels = original_dataset.data_df.iloc[indices]["label"]
-
-            # Compute counts for the filtered labels
-            class_counts = (
-                filtered_labels.map(original_dataset.class_map).value_counts().to_dict()
-            )
-
-        else:
-            class_counts = self.dataset.get_class_counts()
-
-        return class_counts
