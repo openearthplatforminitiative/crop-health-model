@@ -18,7 +18,7 @@ class CropHealthDataset(Dataset):
         target_transform: Callable | None = None,
         limit: int | None = None,
     ) -> None:
-        self.data_df = pd.read_csv(annotations_file).sample(frac=1)
+        self.data_df = pd.read_csv(annotations_file)
         self.img_dir = img_dir
         self.transform = transform
         self.target_transform = target_transform
