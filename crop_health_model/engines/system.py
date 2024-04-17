@@ -14,40 +14,29 @@ class LitModel(pl.LightningModule):
     ) -> None:
         super(LitModel, self).__init__()
         self.model = model
-        self.class_weights = None
         hyperparameters = self.model.get_hyperparameters()
         self.save_hyperparameters(hyperparameters)
 
     def forward(self, x) -> torch.Tensor:
         return self.model(x)
 
-    def set_class_weights(self, class_weights: torch.Tensor) -> None:
-        """Set the class weights for the loss function."""
-        self.class_weights = class_weights
-
     def _compute_loss(
-        self, logits: torch.Tensor, y: torch.Tensor, weights=None
-    ) -> torch.Tensor:
+        self, logits: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
         """Compute the loss function."""
-        return F.cross_entropy(logits, y, weight=weights)
+        return F.cross_entropy(logits, y)
 
     def step_wrapper(
-        self, batch: tuple, batch_idx: int, prefix: str, use_weights: bool = False
-    ) -> torch.Tensor:
+        self, batch: tuple, batch_idx: int) -> torch.Tensor:
         """Wrapper for the training/validation/test step."""
         x, y = batch
         logits = self.model(x)
-        if use_weights:
-            loss = self._compute_loss(logits, y, self.class_weights)
-        else:
-            loss = self._compute_loss(logits, y)
-        return loss
+        return self._compute_loss(logits, y)
 
     def training_step(self, batch: tuple, batch_idx: int) -> torch.Tensor:
-        return self.step_wrapper(batch, batch_idx, prefix="train", use_weights=True)
+        return self.step_wrapper(batch, batch_idx)
 
     def validation_step(self, batch: tuple, batch_idx: int) -> torch.Tensor:
-        return self.step_wrapper(batch, batch_idx, prefix="val")
+        return self.step_wrapper(batch, batch_idx)
 
     def test_step(self, batch: tuple, batch_idx: int) -> torch.Tensor:
-        return self.step_wrapper(batch, batch_idx, prefix="test")
+        return self.step_wrapper(batch, batch_idx)
