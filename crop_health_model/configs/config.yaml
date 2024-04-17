@@ -41,15 +41,6 @@ fit:
     devices: 
     - 0
     - 1
-    logger: 
-    - class_path: lightning.pytorch.loggers.TensorBoardLogger
-      init_args:
-        save_dir: "tb_logs"
-        name: "multi_HLT" # "crop_health_model"
-    - class_path: lightning.pytorch.loggers.CSVLogger
-      init_args:
-        save_dir: "csv_logs"
-        name: "multi_HLT" # "crop_health_model"
   optimizer:
     class_path: torch.optim.Adam
     init_args:
