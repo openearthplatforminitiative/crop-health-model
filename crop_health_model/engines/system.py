@@ -41,37 +41,10 @@ class LitModel(pl.LightningModule):
             loss = self._compute_loss(logits, y, self.class_weights)
         else:
             loss = self._compute_loss(logits, y)
-
-        # logging of metrics
-        preds = torch.argmax(logits, dim=-1)
-        task = "binary" if self.model.num_classes == 2 else "multiclass"
-        acc = accuracy(preds, y, task=task, num_classes=self.model.num_classes)
-        f1 = fbeta_score(
-            preds=preds,
-            target=y,
-            task=task,
-            beta=1.0,
-            num_classes=self.model.num_classes,
-            average="macro",
-        )
-        self.log(f"{prefix}_loss", loss, prog_bar=True, on_epoch=True, sync_dist=True)
-        self.log(f"{prefix}_acc", acc, prog_bar=True, on_epoch=True, sync_dist=True)
-        self.log(f"{prefix}_f1", f1, prog_bar=True, on_epoch=True, sync_dist=True)
         return loss
 
     def training_step(self, batch: tuple, batch_idx: int) -> torch.Tensor:
-        loss = self.step_wrapper(batch, batch_idx, prefix="train", use_weights=True)
-
-        # log the learning rate
-        self.log(
-            "learning_rate",
-            self.trainer.optimizers[0].param_groups[0]["lr"],
-            on_step=False,
-            on_epoch=True,
-            sync_dist=True,
-        )
-
-        return loss
+        return self.step_wrapper(batch, batch_idx, prefix="train", use_weights=True)
 
     def validation_step(self, batch: tuple, batch_idx: int) -> torch.Tensor:
         return self.step_wrapper(batch, batch_idx, prefix="val")
