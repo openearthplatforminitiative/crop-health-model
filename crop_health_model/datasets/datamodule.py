@@ -114,15 +114,3 @@ class CropHealthDataModule(pl.LightningDataModule):
         return DataLoader(
             self.predict_data, batch_size=self.batch_size, num_workers=self.num_workers
         )
-
-    def compute_class_weights(self) -> torch.Tensor:
-        """Compute class weights for imbalanced datasets."""
-        class_counts = self.train_data.get_class_counts()
-        n_samples = sum(class_counts.values())
-        n_classes = len(class_counts)
-
-        # Compute class weights inversely proportional to class counts
-        weights = [n_samples / (n_classes * class_counts[i]) for i in range(n_classes)]
-        class_weights = torch.tensor(weights, dtype=torch.float)
-
-        return class_weights
