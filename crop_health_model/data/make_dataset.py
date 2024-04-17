@@ -2,8 +2,6 @@ import asyncio
 import os
 import zipfile
 
-import aiohttp
-import filetype
 import httpx
 import rarfile
 from tqdm import tqdm as sync_tqdm
@@ -14,7 +12,13 @@ from crop_health_model.data.metadata import all_datasets
 harvard_dataverse_base_url = "https://dataverse.harvard.edu/api/access/datafile/"
 
 
-async def download(url, file_path):
+async def download(url: str, file_path: str):
+    """Download a file from a URL and save it to the specified path.
+
+    Args:
+        url (str): URL to download the file from.
+        file_path (str): Path to save the downloaded file.
+    """
 
     folder, filename = os.path.split(file_path)
 
@@ -49,7 +53,7 @@ async def download(url, file_path):
 
 
 async def download_all():
-
+    """Download all files from each dataset."""
     download_info = [
         (
             harvard_dataverse_base_url + id,
@@ -58,21 +62,18 @@ async def download_all():
         for dataset in all_datasets
         for id, fname in dataset["ids"]
     ]
-    # download_info = download_info[:3]
     print(download_info)
     # Download and extract files concurrently
     tasks = [download(url, file_path) for url, file_path in download_info]
     await asyncio.gather(*tasks)
 
 
-def delete_non_images(folder):
-    for root, dirs, files in os.walk(folder):
-        for file in files:
-            if not file.lower().endswith((".png", ".jpg", ".jpeg")):
-                os.remove(os.path.join(root, file))
+def extract(file_path: str):
+    """Extract files from a zip or rar archive.
 
-
-def extract(file_path):
+    Args:
+        file_path (str): Path to the archive file.
+    """
     folder, filename = os.path.split(file_path)
     # folder = os.path.dirname(file_path)
     if file_path.endswith(".zip"):
@@ -82,11 +83,9 @@ def extract(file_path):
             images = [
                 file for file in all_files if file.lower().endswith((".jpg", ".jpeg"))
             ]
-            # print(f"Extracting zip {file_path}")
             # Use tqdm to create a progress bar
             for file in sync_tqdm(images, desc=f"Extracting {filename}", unit="file"):
                 zip_ref.extract(member=file, path=folder)
-            # print(f"Extracted zip {file_path}")
     elif file_path.endswith(".rar"):
         with rarfile.RarFile(file_path, "r") as rar_ref:
             all_files = rar_ref.namelist()
@@ -94,19 +93,18 @@ def extract(file_path):
             images = [
                 file for file in all_files if file.lower().endswith((".jpg", ".jpeg"))
             ]
-            # print(f"Extracting rar {file_path}")
             # Use tqdm to create a progress bar
             for file in sync_tqdm(images, desc=f"Extracting {filename}", unit="file"):
                 rar_ref.extract(member=file, path=folder)
-            # print(f"Extracted rar {file_path}")
     else:
         print(f"Unsupported file format for {file_path}")
 
 
 def extract_all():
-    # print current directory
-    print(f"current dir: {os.getcwd()}")
+    """Extract all files from each dataset."""
     for dataset in all_datasets:
+        if dataset["folder"] != "bananas-dataset-tanzania":
+            continue
         folder = os.path.join(".data", dataset["folder"])
         for file_name in os.listdir(folder):
             # check that file is a file:
@@ -122,20 +120,9 @@ def extract_all():
                 continue
             extract(file_path)
 
-        # for root, dirs, files in os.walk(os.path.join(".data", dataset["folder"])):
-        #     print(f"Extracting files in {root}")
-        #     for file in files:
-        #         # Some of the archives are multi-part RAR archives. So if the
-        #         # file contains the substring ".part2.", ".part3.", etc. skip it.
-        #         # But don't skip ".part1.", unarchiving it will unarchive the
-        #         # other parts as well.
-        #         if ".part" in file and not ".part1." in file:
-        #             print(f"Skipping {file}")
-        #             continue
-        #         extract(file, root)
-
 
 def delete_archives():
+    """Delete all zip and rar archives after extracting the images."""
     for dataset in all_datasets:
         folder = os.path.join(".data", dataset["folder"])
         for file_name in os.listdir(folder):
@@ -147,4 +134,4 @@ def delete_archives():
 if __name__ == "__main__":
     asyncio.run(download_all())
     extract_all()
-    # delete_non_images(".data")
+    # delete_archives() # Uncomment this line to delete the archives after extracting the images
