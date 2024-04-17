@@ -2,8 +2,6 @@ import lightning.pytorch as pl
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchmetrics.functional import accuracy, fbeta_score
-
 
 class LitModel(pl.LightningModule):
     """PyTorch Lightning module for training the Crop Health model."""
