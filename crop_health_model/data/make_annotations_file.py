@@ -28,7 +28,7 @@ def generate_annotations(
     classes: list[dict],
     total_image_count: int,
     crop_type: str,
-):
+) -> pd.DataFrame:
     """Generate annotations for a dataset.
 
     Args:
@@ -118,7 +118,7 @@ def generate_annotations(
     return df
 
 
-def generate_all_annotations():
+def generate_all_annotations() -> None:
     """Generate annotations for all datasets."""
     all_dfs = []
     for dataset in all_datasets:

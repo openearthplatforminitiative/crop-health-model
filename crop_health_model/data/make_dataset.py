@@ -12,7 +12,7 @@ from crop_health_model.data.metadata import all_datasets
 harvard_dataverse_base_url = "https://dataverse.harvard.edu/api/access/datafile/"
 
 
-async def download(url: str, file_path: str):
+async def download(url: str, file_path: str) -> None:
     """Download a file from a URL and save it to the specified path.
 
     Args:
@@ -52,7 +52,7 @@ async def download(url: str, file_path: str):
                 return
 
 
-async def download_all():
+async def download_all() -> None:
     """Download all files from each dataset."""
     download_info = [
         (
@@ -68,7 +68,7 @@ async def download_all():
     await asyncio.gather(*tasks)
 
 
-def extract(file_path: str):
+def extract(file_path: str) -> None:
     """Extract files from a zip or rar archive.
 
     Args:
@@ -100,7 +100,7 @@ def extract(file_path: str):
         print(f"Unsupported file format for {file_path}")
 
 
-def extract_all():
+def extract_all() -> None:
     """Extract all files from each dataset."""
     for dataset in all_datasets:
         if dataset["folder"] != "bananas-dataset-tanzania":
@@ -121,7 +121,7 @@ def extract_all():
             extract(file_path)
 
 
-def delete_archives():
+def delete_archives() -> None:
     """Delete all zip and rar archives after extracting the images."""
     for dataset in all_datasets:
         folder = os.path.join(".data", dataset["folder"])
