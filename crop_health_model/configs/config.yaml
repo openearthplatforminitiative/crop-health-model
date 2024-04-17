@@ -41,36 +41,6 @@ fit:
     devices: 
     - 0
     - 1
-    callbacks:
-    - class_path: lightning.pytorch.callbacks.EarlyStopping
-      init_args:
-        monitor: "val_loss"
-        mode: "min"
-    - class_path: crop_health_model.engines.callbacks.ImagePredictionLogger
-      init_args:
-        num_samples: 32
-    - class_path: lightning.pytorch.callbacks.ModelCheckpoint
-      init_args:
-        monitor: "val_loss"
-        mode: "min"
-        save_top_k: 1
-        filename: "crop_health_model-{epoch}-{step}-{val_loss:.3f}"
-    - class_path: crop_health_model.engines.callbacks.SaveDictionaryCallback
-      init_args:
-        dict_name: "class_map"
-        filename: "index_to_name"
-    - class_path: crop_health_model.engines.callbacks.ClassWeightsCallback
-    - class_path: crop_health_model.engines.callbacks.SaveModelScriptCallback
-      init_args:
-        filename: "model_script.py"
-        template_path: "crop_health_model/models/model.py"
-    - class_path: crop_health_model.engines.callbacks.SaveModelHandlerCallback
-      init_args:
-        filename: "model_handler.py"
-        config_path: "crop_health_model/configs/config.yaml"
-    - class_path: crop_health_model.engines.callbacks.SimplifiedCheckpoint
-      init_args:
-        filename: "best_model"
     logger: 
     - class_path: lightning.pytorch.loggers.TensorBoardLogger
       init_args:
