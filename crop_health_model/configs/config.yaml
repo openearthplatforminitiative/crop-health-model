@@ -41,6 +41,10 @@ fit:
     devices: 
     - 0
     - 1
+    callbacks:
+    - class_path: crop_health_model.engines.callbacks.ImagePredictionLogger
+      init_args:
+        num_samples: 32
   optimizer:
     class_path: torch.optim.Adam
     init_args:
