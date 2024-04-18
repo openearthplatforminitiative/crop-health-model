@@ -42,7 +42,7 @@ fit:
     - 0
     - 1
     callbacks:
-    - class_path: crop_health_model.engines.callbacks.SaveDictionaryCallback
+    - class_path: crop_health_model.engines.callbacks.SaveDataDictionaryCallback
       init_args:
         dict_name: "class_map"
         filename: "index_to_name"

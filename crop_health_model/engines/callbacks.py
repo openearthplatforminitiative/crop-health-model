@@ -7,7 +7,7 @@ import yaml
 from lightning.pytorch.callbacks import Callback
 
 
-class SaveDictionaryCallback(Callback):
+class SaveDataDictionaryCallback(Callback):
     """Callback to save a dictionary from the LightningDataModule as a JSON file."""
 
     def __init__(self, dict_name: str, filename: str) -> None:
