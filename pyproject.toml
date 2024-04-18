@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "crop-health-model"
+version = "0.1.0"
+description = "Machine learning model for crop health prediction"
+authors = ["Gil Tinde <gil.tinde@knowit.no>"]
+license = "Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+torch = "^2.2.1"
+torchvision = "^0.17.1"
+lightning = "^2.2.1"
+pandas = "^2.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
