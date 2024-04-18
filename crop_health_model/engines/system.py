@@ -22,9 +22,7 @@ class LitModel(pl.LightningModule):
         """Compute the loss function."""
         return F.cross_entropy(logits, y)
 
-    def step_wrapper(
-        self, batch: tuple, batch_idx: int, prefix: str
-    ) -> torch.Tensor:
+    def step_wrapper(self, batch: tuple, batch_idx: int, prefix: str) -> torch.Tensor:
         """Wrapper for the training/validation/test step."""
         x, y = batch
         logits = self.model(x)
