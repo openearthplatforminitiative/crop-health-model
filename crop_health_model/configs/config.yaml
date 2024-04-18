@@ -57,15 +57,6 @@ fit:
     - class_path: crop_health_model.engines.callbacks.SaveSimplifiedCheckpoint
       init_args:
         filename: "best_model"
-    logger: 
-    - class_path: lightning.pytorch.loggers.TensorBoardLogger
-      init_args:
-        save_dir: "tb_logs"
-        name: "multi_HLT"
-    - class_path: lightning.pytorch.loggers.CSVLogger
-      init_args:
-        save_dir: "csv_logs"
-        name: "multi_HLT"
   optimizer:
     class_path: torch.optim.Adam
     init_args:
