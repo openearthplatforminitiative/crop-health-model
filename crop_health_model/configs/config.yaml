@@ -41,6 +41,31 @@ fit:
     devices: 
     - 0
     - 1
+    callbacks:
+    - class_path: crop_health_model.engines.callbacks.SaveDictionaryCallback
+      init_args:
+        dict_name: "class_map"
+        filename: "index_to_name"
+    - class_path: crop_health_model.engines.callbacks.SaveModelScriptCallback
+      init_args:
+        filename: "model_script.py"
+        template_path: "crop_health_model/models/model.py"
+    - class_path: crop_health_model.engines.callbacks.SaveModelHandlerCallback
+      init_args:
+        filename: "model_handler.py"
+        config_path: "crop_health_model/configs/config.yaml"
+    - class_path: crop_health_model.engines.callbacks.SaveSimplifiedCheckpoint
+      init_args:
+        filename: "best_model"
+    logger: 
+    - class_path: lightning.pytorch.loggers.TensorBoardLogger
+      init_args:
+        save_dir: "tb_logs"
+        name: "multi_HLT"
+    - class_path: lightning.pytorch.loggers.CSVLogger
+      init_args:
+        save_dir: "csv_logs"
+        name: "multi_HLT"
   optimizer:
     class_path: torch.optim.Adam
     init_args:
