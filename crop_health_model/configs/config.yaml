@@ -45,6 +45,11 @@ fit:
     - class_path: crop_health_model.engines.callbacks.ImagePredictionLogger
       init_args:
         num_samples: 32
+    logger: 
+    - class_path: lightning.pytorch.loggers.TensorBoardLogger
+      init_args:
+        save_dir: "tb_logs"
+        name: "multi_HLT"
   optimizer:
     class_path: torch.optim.Adam
     init_args:
