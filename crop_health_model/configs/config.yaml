@@ -41,6 +41,8 @@ fit:
     devices: 
     - 0
     - 1
+    callbacks:
+    - class_path: crop_health_model.engines.callbacks.ClassWeightsCallback
   optimizer:
     class_path: torch.optim.Adam
     init_args:
