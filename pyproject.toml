@@ -12,13 +12,14 @@ torch = "^2.2.1"
 torchvision = "^0.17.1"
 lightning = "^2.2.1"
 pandas = "^2.2.1"
-tensorboard = "^2.16.2"
-matplotlib = "^3.8.3"
 rarfile = "^4.1"
 httpx = "^0.27.0"
+jsonargparse = {extras = ["signatures"], version = "^4.27.6"}
+tensorboard = "^2.16.2"
 matplotlib = "^3.8.3"
 ipykernel = "^6.29.4"
-tensorboard = "^2.16.2"
+pyyaml = "^6.0.1"
+torch-model-archiver = "^0.10.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"
