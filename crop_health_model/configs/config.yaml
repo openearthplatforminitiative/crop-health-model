@@ -22,6 +22,12 @@ fit:
     - class_path: torchvision.transforms.CenterCrop
       init_args: 
         size: 224
+    - class_path: torchvision.transforms.RandomHorizontalFlip
+      init_args:
+        p: 0.5
+    - class_path: torchvision.transforms.RandomVerticalFlip
+      init_args:
+        p: 0.5
     test_transforms:
     - class_path: torchvision.transforms.Resize
       init_args:
