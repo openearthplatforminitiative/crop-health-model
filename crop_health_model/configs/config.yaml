@@ -22,6 +22,12 @@ fit:
     - class_path: torchvision.transforms.CenterCrop
       init_args: 
         size: 224
+    - class_path: torchvision.transforms.RandomHorizontalFlip
+      init_args:
+        p: 0.5
+    - class_path: torchvision.transforms.RandomVerticalFlip
+      init_args:
+        p: 0.5
     test_transforms:
     - class_path: torchvision.transforms.Resize
       init_args:
@@ -41,7 +47,36 @@ fit:
     devices: 
     - 0
     - 1
+    callbacks:
+    - class_path: lightning.pytorch.callbacks.EarlyStopping
+      init_args:
+        monitor: "val_loss"
+        mode: "min"
+    - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+      init_args:
+        monitor: "val_loss"
+        mode: "min"
+        save_top_k: 1
+        filename: "crop_health_model-{epoch}-{step}-{val_loss:.3f}"
+    - class_path: crop_health_model.engines.callbacks.ImagePredictionLogger
+      init_args:
+        num_samples: 32
+    - class_path: crop_health_model.engines.callbacks.ClassWeightsCallback
+    logger: 
+    - class_path: lightning.pytorch.loggers.TensorBoardLogger
+      init_args:
+        save_dir: "tb_logs"
+        name: "multi_HLT"
+    - class_path: lightning.pytorch.loggers.CSVLogger
+      init_args:
+        save_dir: "csv_logs"
+        name: "multi_HLT"
   optimizer:
     class_path: torch.optim.Adam
     init_args:
       lr: 0.001
+  lr_scheduler:
+    class_path: torch.optim.lr_scheduler.StepLR
+    init_args:
+      step_size: 5
+      gamma: 0.1
