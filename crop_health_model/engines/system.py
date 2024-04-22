@@ -14,19 +14,31 @@ class LitModel(pl.LightningModule):
     ) -> None:
         super(LitModel, self).__init__()
         self.model = model
+        self.class_weights = None
 
     def forward(self, x) -> torch.Tensor:
         return self.model(x)
 
-    def _compute_loss(self, logits: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
-        """Compute the loss function."""
-        return F.cross_entropy(logits, y)
+    def set_class_weights(self, class_weights: torch.Tensor) -> None:
+        """Set the class weights for the loss function."""
+        self.class_weights = class_weights
 
-    def step_wrapper(self, batch: tuple, batch_idx: int, prefix: str) -> torch.Tensor:
+    def _compute_loss(
+        self, logits: torch.Tensor, y: torch.Tensor, weights=None
+    ) -> torch.Tensor:
+        """Compute the loss function."""
+        return F.cross_entropy(logits, y, weight=weights)
+
+    def step_wrapper(
+        self, batch: tuple, batch_idx: int, prefix: str, use_weights: bool = False
+    ) -> torch.Tensor:
         """Wrapper for the training/validation/test step."""
         x, y = batch
         logits = self.model(x)
-        loss = self._compute_loss(logits, y)
+        if use_weights:
+            loss = self._compute_loss(logits, y, self.class_weights)
+        else:
+            loss = self._compute_loss(logits, y)
 
         # logging of metrics
         preds = torch.argmax(logits, dim=-1)
@@ -46,7 +58,7 @@ class LitModel(pl.LightningModule):
         return loss
 
     def training_step(self, batch: tuple, batch_idx: int) -> torch.Tensor:
-        loss = self.step_wrapper(batch, batch_idx, prefix="train")
+        loss = self.step_wrapper(batch, batch_idx, prefix="train", use_weights=True)
 
         # log the learning rate
         self.log(
