@@ -42,3 +42,10 @@ class ResNet(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass of the model."""
         return self.resnet(x)
+
+    def get_hyperparameters(self) -> dict:
+        """Return the hyperparameters of the model."""
+        return {
+            "num_classes": self.num_classes,
+            "num_layers": self.num_layers,
+        }

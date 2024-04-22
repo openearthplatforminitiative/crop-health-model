@@ -15,6 +15,8 @@ class LitModel(pl.LightningModule):
         super(LitModel, self).__init__()
         self.model = model
         self.class_weights = None
+        hyperparameters = self.model.get_hyperparameters()
+        self.save_hyperparameters(hyperparameters)
 
     def forward(self, x) -> torch.Tensor:
         return self.model(x)
