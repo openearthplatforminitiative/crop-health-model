@@ -186,6 +186,9 @@ class SaveModelHandlerCallback(Callback):
 
         test_transforms = config["fit"]["data"].get("test_transforms", [])
         normalization = config["fit"]["data"].get("normalization", None)
+        num_classes = config["fit"]["model"]["model"]["init_args"]["num_classes"]
+
+        topk = self.compute_top_k(num_classes)
 
         transform_lines = [
             f"        {self.get_transform_code(transform)},"
@@ -202,6 +205,7 @@ from torchvision import transforms
 from ts.torch_handler.image_classifier import ImageClassifier
 
 class CustomHandler(ImageClassifier):
+    topk = {topk}
     image_processing = transforms.Compose([
 {transform_pipeline_code}
     ])
@@ -215,6 +219,10 @@ class CustomHandler(ImageClassifier):
         class_path = transform["class_path"].split(".")[-1]
         init_args = ", ".join(f"{k}={v}" for k, v in transform["init_args"].items())
         return f"transforms.{class_path}({init_args})"
+    
+    def compute_top_k(self, num_classes: int) -> int:
+        """Computes the top-k value based on the number of classes."""
+        return min(num_classes, 5)
 
 
 class SaveSimplifiedCheckpoint(Callback):
