@@ -18,8 +18,8 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
-        context: ./build_image
-        file: ./build_image/docker/Dockerfile
+          context: ./build_image
+          file: ./build_image/docker/Dockerfile
           push: false
   lint:
     runs-on: ubuntu-latest
