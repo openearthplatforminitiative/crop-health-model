@@ -12,6 +12,9 @@ __pycache__/
 # checkpoints
 tb_logs/**/checkpoints/
 
+# ignore .mar files in logs
+tb_logs/**/*.mar
+
 **/.DS_Store
 
 # Distribution / packaging
