@@ -2,8 +2,9 @@ name: Main Release
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - 'deployment/**'
+    paths:
+      - '.github/workflows/main-release.yml'
+      - 'build_image/**'
 
 env:
   REGISTRY: ghcr.io
