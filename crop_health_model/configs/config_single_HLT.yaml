@@ -4,13 +4,13 @@ fit:
       class_path: crop_health_model.models.model.ResNet
       init_args:
         weights: "DEFAULT"
-        num_classes: 17 # 2 for binary, 13 for single-HLT, 17 for multi-HLT
+        num_classes: 13 # 2 for binary, 13 for single-HLT, 17 for multi-HLT
         num_layers: 18
   data:
     batch_size: 32
     data_dir: .data
     annotations_file: annotations.csv
-    task: "multi-HLT" # binary, single-HLT, or multi-HLT
+    task: "single-HLT" # binary, single-HLT, or multi-HLT
     data_split: [0.8, 0.2]
     num_workers: 16
     limit: null
@@ -73,7 +73,7 @@ fit:
     - class_path: crop_health_model.engines.callbacks.SaveModelHandlerCallback
       init_args:
         filename: "model_handler.py"
-        config_path: "crop_health_model/configs/config.yaml"
+        config_path: "crop_health_model/configs/config_single_HLT.yaml"
     - class_path: crop_health_model.engines.callbacks.SaveSimplifiedCheckpoint
       init_args:
         filename: "best_model"
@@ -81,11 +81,11 @@ fit:
     - class_path: lightning.pytorch.loggers.TensorBoardLogger
       init_args:
         save_dir: "tb_logs"
-        name: "multi_HLT"
+        name: "single_HLT"
     - class_path: lightning.pytorch.loggers.CSVLogger
       init_args:
         save_dir: "csv_logs"
-        name: "multi_HLT"
+        name: "single_HLT"
   optimizer:
     class_path: torch.optim.Adam
     init_args:

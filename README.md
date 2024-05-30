@@ -4,34 +4,34 @@ This file goes over a few useful things to know about how to configure the entir
 
 ## Main model configurations
 
-To train a model, start by configuring the data, model and training through the `config.yaml` file inside the `configs` folder. Currently, three main model configurations are defined. 
+To train a model, start by configuring the data, model and training through the `config_<type>.yaml` files inside the `configs` folder. Currently, three main model configurations are defined. 
 
 ### Binary classifier
 
-The first model is a binary classifier, predicting whether a crop is healthy or sick. To use this configuration, the following fields need to be defined in the following way:
+The first model is a binary classifier, predicting whether a crop is healthy or sick. In this configuration, the following fields are defined in the following way:
 ````
 fit.model.model.init_args.num_classes: 2
 fit.data.task: binary
 ````
-Additionally, all loggers in `fit.trainer.logger` need to have `name` set to `binary`.
+Additionally, all loggers in `fit.trainer.logger` have `name` set to `binary`.
 
 ### Multiclass classifier with a single healthy class
 
-The second model is a multiclass classifier with a single healthy class, predicting whether a crop is healthy or afflicted with one of several diseases. To use this configuration, the following fields need to be defined in the following way:
+The second model is a multiclass classifier with a single healthy class, predicting whether a crop is healthy or afflicted with one of several diseases. In this configuration, the following fields are defined in the following way:
 ````
 fit.model.model.init_args.num_classes: 13
 fit.data.task: single-HLT
 ````
-Additionally, all loggers in `fit.trainer.logger` need to have `name` set to `single_HLT`.
+Additionally, all loggers in `fit.trainer.logger` have `name` set to `single_HLT`.
 
 ### Multiclass classifier with multiple healthy classes
 
-The third model is a multiclass classifier with several healthy classes (one for each crop type), predicting whether a crop of a specific type is healthy or afflicted with one of several diseases. To use this configuration, the following fields need to be defined in the following way:
+The third model is a multiclass classifier with several healthy classes (one for each crop type), predicting whether a crop of a specific type is healthy or afflicted with one of several diseases. In this configuration, the following fields are defined in the following way:
 ````
 fit.model.model.init_args.num_classes: 17
 fit.data.task: multi-HLT
 ````
-Additionally, all loggers in `fit.trainer.logger` need to have `name` set to `multi_HLT`.
+Additionally, all loggers in `fit.trainer.logger` have `name` set to `multi_HLT`.
 
 ## Additional configuration
 
@@ -65,14 +65,14 @@ The optimizer and learning rate scheduler can be set through the `fit.optimizer`
 
 To run a training process, run the following command from the root of this project:
 ```
-python3 crop_health_model/scripts/train.py --config crop_health_model/configs/config.yaml fit
+python3 crop_health_model/scripts/train.py --config crop_health_model/configs/config_multi_HLT.yaml fit
 ```
 
 To evaluate a model on the validation set, identify the model version and the filename of its checkpoint, then run the following from the root of this project:
 ```
 python3 crop_health_model/scripts/train.py validate --config tb_logs/multi_HLT/version_0/config.yaml --ckpt_path tb_logs/multi_HLT/version_0/checkpoints/crop_health_model-epoch=5-step=7260-val_loss=0.181.ckpt --trainer.devices=1
 ```
-Here we set the number of devices to be 1 to avoid getting a warning about using distributed dataloaders in a validation/test phase. Such a value could also be set directly in the config file proivded through the `--config` argument.
+Here we set the number of devices to be 1 to avoid getting a warning about using distributed dataloaders in a validation/test phase. Such a value could also be set directly in the config file provided through the `--config` argument.
 
 Similarly, to evaluate the above model on the test set, run the following:
 ```
@@ -81,7 +81,10 @@ python3 crop_health_model/scripts/train.py test --config tb_logs/multi_HLT/versi
 
 ## Create a model archive (MAR) file
 
-To create a model archive file to be used by TorchServe, simple navigate to the folder of the specific model and version (in this case single-HLT version 2) to archive and run:
+To create a model archive file to be used by TorchServe, simply navigate to the folder of the specific model and version (in this case single-HLT version 2 -> `tb_logs/single_HLT/version_2`) to archive and run:
 ```
 torch-model-archiver --model-name single-HLT --version 2.0 --model-file model_script.py --serialized-file checkpoints/best_model.pt --handler model_handler.py --extra-files index_to_name.json
 ```
+For this command, only the `--model-name` and `--version` need to be adjsuted for each case.
+
+Torch Model Archiver will create a `single-HLT.mar` file inside `tb_logs/single_HLT/version_2`. To deploy this model, simply add it to the `model_store` folder inside `build_image`.
