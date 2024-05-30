@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import pytest
 
@@ -29,8 +31,6 @@ def create_dummy_dataset() -> None:
 
 
 def cleanup_dummy_dataset() -> None:
-    import os
-
     os.remove(TMP_DATA_PATH)
 
 
