@@ -66,7 +66,7 @@ class ImagePredictionLogger(Callback):
 
 class ClassWeightsCallback(Callback):
     """Callback to set class weights in the model."""
-    
+
     def on_train_start(
         self, trainer: pl.Trainer, pl_module: pl.LightningModule
     ) -> None:
@@ -219,7 +219,7 @@ class CustomHandler(ImageClassifier):
         class_path = transform["class_path"].split(".")[-1]
         init_args = ", ".join(f"{k}={v}" for k, v in transform["init_args"].items())
         return f"transforms.{class_path}({init_args})"
-    
+
     def compute_top_k(self, num_classes: int) -> int:
         """Computes the top-k value based on the number of classes."""
         return min(num_classes, 5)
