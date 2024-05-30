@@ -1,11 +1,11 @@
-name: Continous Integration
+name: Build Workflow
 on:
   workflow_dispatch:
   pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/continous-integration.yaml'
+      - '.github/workflows/build.yaml'
       - 'build_image/**'
 
 jobs:
@@ -24,13 +24,3 @@ jobs:
           context: ./build_image
           file: ./build_image/docker/Dockerfile
           push: false
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-
-      - name: Check linting
-        uses: rickstaa/action-black@v1
-        with:
-          black_args: ". --check"
