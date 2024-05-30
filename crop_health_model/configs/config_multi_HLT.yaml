@@ -73,7 +73,7 @@ fit:
     - class_path: crop_health_model.engines.callbacks.SaveModelHandlerCallback
       init_args:
         filename: "model_handler.py"
-        config_path: "crop_health_model/configs/config.yaml"
+        config_path: "crop_health_model/configs/config_multi_HLT.yaml"
     - class_path: crop_health_model.engines.callbacks.SaveSimplifiedCheckpoint
       init_args:
         filename: "best_model"
