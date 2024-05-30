@@ -18,7 +18,7 @@ spec:
         prometheus.io/path: "/metrics"
     spec:
       containers:
-        - image: ghcr.io/openearthplatforminitiative/crop-health-api:0.0.1
+        - image: ghcr.io/openearthplatforminitiative/crop-health-model:0.0.1
           name: crop-health-api
           ports:
             - containerPort: 8080  # Inference API
