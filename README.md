@@ -4,34 +4,34 @@ This file goes over a few useful things to know about how to configure the entir
 
 ## Main model configurations
 
-To train a model, start by configuring the data, model and training through the `config.yaml` file inside the `configs` folder. Currently, three main model configurations are defined. 
+To train a model, start by configuring the data, model and training through the `config_<type>.yaml` files inside the `configs` folder. Currently, three main model configurations are defined. 
 
 ### Binary classifier
 
-The first model is a binary classifier, predicting whether a crop is healthy or sick. To use this configuration, the following fields need to be defined in the following way:
+The first model is a binary classifier, predicting whether a crop is healthy or sick. In this configuration, the following fields are defined in the following way:
 ````
 fit.model.model.init_args.num_classes: 2
 fit.data.task: binary
 ````
-Additionally, all loggers in `fit.trainer.logger` need to have `name` set to `binary`.
+Additionally, all loggers in `fit.trainer.logger` have `name` set to `binary`.
 
 ### Multiclass classifier with a single healthy class
 
-The second model is a multiclass classifier with a single healthy class, predicting whether a crop is healthy or afflicted with one of several diseases. To use this configuration, the following fields need to be defined in the following way:
+The second model is a multiclass classifier with a single healthy class, predicting whether a crop is healthy or afflicted with one of several diseases. In this configuration, the following fields are defined in the following way:
 ````
 fit.model.model.init_args.num_classes: 13
 fit.data.task: single-HLT
 ````
-Additionally, all loggers in `fit.trainer.logger` need to have `name` set to `single_HLT`.
+Additionally, all loggers in `fit.trainer.logger` have `name` set to `single_HLT`.
 
 ### Multiclass classifier with multiple healthy classes
 
-The third model is a multiclass classifier with several healthy classes (one for each crop type), predicting whether a crop of a specific type is healthy or afflicted with one of several diseases. To use this configuration, the following fields need to be defined in the following way:
+The third model is a multiclass classifier with several healthy classes (one for each crop type), predicting whether a crop of a specific type is healthy or afflicted with one of several diseases. In this configuration, the following fields are defined in the following way:
 ````
 fit.model.model.init_args.num_classes: 17
 fit.data.task: multi-HLT
 ````
-Additionally, all loggers in `fit.trainer.logger` need to have `name` set to `multi_HLT`.
+Additionally, all loggers in `fit.trainer.logger` have `name` set to `multi_HLT`.
 
 ## Additional configuration
 
@@ -65,7 +65,7 @@ The optimizer and learning rate scheduler can be set through the `fit.optimizer`
 
 To run a training process, run the following command from the root of this project:
 ```
-python3 crop_health_model/scripts/train.py --config crop_health_model/configs/config.yaml fit
+python3 crop_health_model/scripts/train.py --config crop_health_model/configs/config_multi_HLT.yaml fit
 ```
 
 To evaluate a model on the validation set, identify the model version and the filename of its checkpoint, then run the following from the root of this project:
