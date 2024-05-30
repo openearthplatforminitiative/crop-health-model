@@ -28,20 +28,24 @@ class CropHealthDataset(Dataset):
             self.data_df = self.data_df[:limit]
             print(f"Using only {limit} rows")
 
-        if task == "binary":
-            # binary classification with one healthy (HLT) class and one sick (NOT_HLT) class
-            # map all non "HLT" classes to "NOT_HLT"
-            mask = self.data_df["label"] != "HLT"
-            self.data_df.loc[mask, "label"] = "NOT_HLT"
-        elif task == "single-HLT":
-            # keep everything as is, i.e., several sick classes and one healthy class
-            pass
-        elif task == "multi-HLT":
-            # multiple healthy classes (one for each crop type) and multiple sick classes
-            # combine "label" with "crop_type" to create a new label
-            self.data_df["label"] = (
-                self.data_df["label"] + "_" + self.data_df["crop_type"]
-            )
+        match task:
+            case "binary":
+                # binary classification with one healthy (HLT) class and one sick (NOT_HLT) class
+                # map all non "HLT" classes to "NOT_HLT"
+                mask = self.data_df["label"] != "HLT"
+                self.data_df.loc[mask, "label"] = "NOT_HLT"
+            case "single-HLT":
+                # keep everything as is, i.e., several sick classes and one healthy class
+                pass
+            case "multi-HLT":
+                # multiple healthy classes (one for each crop type) and multiple sick classes
+                # combine "label" with "crop_type" to create a new label
+                self.data_df["label"] = (
+                    self.data_df["label"] + "_" + self.data_df["crop_type"]
+                )
+            case _:
+                raise ValueError(f"Invalid task: {task}")
+
         # print number of distinct classes
         print(f"Number of distinct classes: {len(self.data_df['label'].unique())}")
 

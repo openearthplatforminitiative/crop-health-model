@@ -21,18 +21,19 @@ class ResNet(nn.Module):
         """
         super(ResNet, self).__init__()
 
-        if num_layers == 18:
-            self.resnet = models.resnet18(weights=weights)
-        elif num_layers == 34:
-            self.resnet = models.resnet34(weights=weights)
-        elif num_layers == 50:
-            self.resnet = models.resnet50(weights=weights)
-        elif num_layers == 101:
-            self.resnet = models.resnet101(weights=weights)
-        elif num_layers == 152:
-            self.resnet = models.resnet152(weights=weights)
-        else:
-            raise ValueError("Invalid number of layers: {}".format(num_layers))
+        match num_layers:
+            case 18:
+                self.resnet = models.resnet18(weights=weights)
+            case 34:
+                self.resnet = models.resnet34(weights=weights)
+            case 50:
+                self.resnet = models.resnet50(weights=weights)
+            case 101:
+                self.resnet = models.resnet101(weights=weights)
+            case 152:
+                self.resnet = models.resnet152(weights=weights)
+            case _:
+                raise ValueError(f"Invalid number of layers: {num_layers}")
 
         # Replace the last fully connected layer of the model
         self.resnet.fc = nn.Linear(self.resnet.fc.in_features, num_classes)
