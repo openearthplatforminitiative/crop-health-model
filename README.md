@@ -72,7 +72,7 @@ To evaluate a model on the validation set, identify the model version and the fi
 ```
 python3 crop_health_model/scripts/train.py validate --config tb_logs/multi_HLT/version_0/config.yaml --ckpt_path tb_logs/multi_HLT/version_0/checkpoints/crop_health_model-epoch=5-step=7260-val_loss=0.181.ckpt --trainer.devices=1
 ```
-Here we set the number of devices to be 1 to avoid getting a warning about using distributed dataloaders in a validation/test phase. Such a value could also be set directly in the config file proivded through the `--config` argument.
+Here we set the number of devices to be 1 to avoid getting a warning about using distributed dataloaders in a validation/test phase. Such a value could also be set directly in the config file provided through the `--config` argument.
 
 Similarly, to evaluate the above model on the test set, run the following:
 ```
