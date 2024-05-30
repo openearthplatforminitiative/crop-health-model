@@ -9,6 +9,9 @@ __pycache__/
 # data
 .data/
 
+# checkpoints
+tb_logs/**/checkpoints/
+
 **/.DS_Store
 
 # Distribution / packaging
