@@ -81,7 +81,10 @@ python3 crop_health_model/scripts/train.py test --config tb_logs/multi_HLT/versi
 
 ## Create a model archive (MAR) file
 
-To create a model archive file to be used by TorchServe, simple navigate to the folder of the specific model and version (in this case single-HLT version 2) to archive and run:
+To create a model archive file to be used by TorchServe, simply navigate to the folder of the specific model and version (in this case single-HLT version 2 -> `tb_logs/single_HLT/version_2`) to archive and run:
 ```
 torch-model-archiver --model-name single-HLT --version 2.0 --model-file model_script.py --serialized-file checkpoints/best_model.pt --handler model_handler.py --extra-files index_to_name.json
 ```
+For this command, only the `--model-name` and `--version` need to be adjsuted for each case.
+
+This will create a `single-HLT.mar` file inside `tb_logs/single_HLT/version_2`. To deploy this model, we add it to the `model_store` folder inside `build_image`.
