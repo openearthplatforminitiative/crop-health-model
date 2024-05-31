@@ -103,6 +103,9 @@ RUN \
         python -m pip install --no-cache-dir torchserve-nightly torch-model-archiver-nightly torch-workflow-archiver-nightly;\
     fi
 
+RUN python -m pip install fastapi uvicorn requests pydantic-settings
+
+
 # Final image for production
 FROM ${BASE_IMAGE} AS production-image
 # Re-state ARG PYTHON_VERSION to make it active in this build-stage (uses default define at the top)
@@ -142,8 +145,9 @@ RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh \
 COPY docker/config.properties /home/model-server/config.properties
 RUN mkdir /home/model-server/model-store && chown -R model-server /home/model-server/model-store
 COPY model_store/*.mar /home/model-server/model-store/
+COPY api/ /home/model-server/api/
 
-EXPOSE 8080 8081 8082 7070 7071
+EXPOSE 8080 8081 8082 7070 7071 5000
 
 USER model-server
 WORKDIR /home/model-server
