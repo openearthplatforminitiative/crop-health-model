@@ -10,9 +10,6 @@ else
     eval "$@"
 fi
 
-# prevent docker exit
-# tail -f /dev/null
-
 # Start FastAPI app
 uvicorn api.redoc:app --host 0.0.0.0 --port 5000 &
 
