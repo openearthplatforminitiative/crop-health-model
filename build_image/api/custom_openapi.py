@@ -3,8 +3,6 @@ import os
 from pathlib import Path
 from string import Template
 
-from fastapi.routing import APIRoute
-
 from api.settings import settings
 
 supported_languages = {"cURL": "sh", "JavaScript": "js", "Python": "py"}
@@ -15,23 +13,56 @@ def custom_openapi_gen(openapi_schema: dict, example_code_dir: Path):
     openapi_schema["info"]["x-logo"] = {
         "url": f"https://{settings.api_domain}/assets/icons/open-epi-logo.svg"
     }
-    openapi_schema["title"] = settings.title
-    openapi_schema["version"] = settings.version
-    openapi_schema["description"] = settings.api_description
+    openapi_schema["info"]["title"] = settings.title
+    openapi_schema["info"]["version"] = settings.version
+    openapi_schema["info"]["description"] = settings.api_description
+
+    # Endpoint path and method to modify
+    endpoint_path = "/predictions/{model_name}"
+    method = "post"
+
+    # Need to manually define the schema for the model response
+    if (
+        endpoint_path in openapi_schema["paths"]
+        and method in openapi_schema["paths"][endpoint_path]
+    ):
+        openapi_schema["paths"][endpoint_path][method]["responses"]["200"] = {
+            "description": "Predicted class confidences, all summing to 1.0. Actual class names may vary by model.",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "required": ["class1", "class2", "class3"],
+                        "properties": {
+                            "class1": {
+                                "type": "float",
+                                "description": "Confidence score for class1.",
+                            },
+                            "class2": {
+                                "type": "float",
+                                "description": "Confidence score for class2.",
+                            },
+                            "class3": {
+                                "type": "float",
+                                "description": "Confidence score for class3.",
+                            },
+                        },
+                        "example": {"class1": 0.85, "class2": 0.10, "class3": 0.05},
+                    }
+                }
+            },
+        }
 
     # Derive the API routes from the OpenAPI schema
     api_routes = list(openapi_schema["paths"].keys())
-
     # remove leading slashes from the routes
     api_routes = [route.lstrip("/") for route in api_routes]
 
     for route in api_routes:
         code_samples = get_code_samples(route, example_code_dir)
-
         if code_samples:
             # add leading slashes back to the routes
             route = "/" + route
-            # try first with "get", then with "post"
             if "get" in openapi_schema["paths"][route]:
                 openapi_schema["paths"][route]["get"]["x-codeSamples"] = code_samples
             elif "post" in openapi_schema["paths"][route]:
