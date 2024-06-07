@@ -1,11 +1,11 @@
-# import logging
-# import os
-# from pathlib import Path
-# from string import Template
+import logging
+import os
+from pathlib import Path
+from string import Template
 
-# from api.settings import settings
+from api.settings import settings
 
-# supported_languages = {"cURL": "sh", "JavaScript": "js", "Python": "py"}
+supported_languages = {"cURL": "sh", "JavaScript": "js", "Python": "py"}
 
 
 # def custom_openapi_gen(openapi_schema: dict, example_code_dir: Path):
