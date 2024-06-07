@@ -27,7 +27,10 @@ def custom_openapi_gen(openapi_schema: dict, example_code_dir: Path):
         and method in openapi_schema["paths"][endpoint_path]
     ):
         openapi_schema["paths"][endpoint_path][method]["responses"]["200"] = {
-            "description": "Predicted class confidences, all summing to 1.0. Actual class names may vary by model.",
+            "description": (
+                "Predicted class confidences, all summing to 1.0.",
+                " Actual class names may vary by model.",
+            ),
             "content": {
                 "application/json": {
                     "schema": {
