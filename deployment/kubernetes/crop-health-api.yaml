@@ -24,6 +24,7 @@ spec:
             - containerPort: 8080  # Inference API
             - containerPort: 8081  # Management API
             - containerPort: 8082  # Metrics API
+            - containerPort: 5000  # FastAPI serving ReDoc
           env:
             - name: API_ROOT_PATH
               value: "/crop-health"
@@ -41,8 +42,12 @@ metadata:
   name: crop-health-api
 spec:
   ports:
-    - port: 80
+    - name: inference-api
+      port: 80
       targetPort: 8080
+    - name: fastapi
+    port: 81  # external port number exposed on the service
+    targetPort: 5000  # internal port number in the container
   selector:
     app: crop-health-api
 
@@ -73,3 +78,9 @@ spec:
       port: 80
     middlewares:
     - name: stripprefix-crop-health
+  - kind: Rule
+    match: PathPrefix(`/crop-health/redoc`)
+    services:
+    - kind: Service
+      name: crop-health-api
+      port: 81  # This is the new port configured for FastAPI
