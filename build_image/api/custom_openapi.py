@@ -55,22 +55,22 @@ def custom_openapi_gen(openapi_schema: dict, example_code_dir: Path):
             },
         }
 
-    # # Derive the API routes from the OpenAPI schema
-    # api_routes = list(openapi_schema["paths"].keys())
-    # # remove leading slashes from the routes
-    # api_routes = [route.lstrip("/") for route in api_routes]
+    # Derive the API routes from the OpenAPI schema
+    api_routes = list(openapi_schema["paths"].keys())
+    # remove leading slashes from the routes
+    api_routes = [route.lstrip("/") for route in api_routes]
 
-    # for route in api_routes:
-    #     code_samples = get_code_samples(route, example_code_dir)
-    #     if code_samples:
-    #         # add leading slashes back to the routes
-    #         route = "/" + route
-    #         if "get" in openapi_schema["paths"][route]:
-    #             openapi_schema["paths"][route]["get"]["x-codeSamples"] = code_samples
-    #         elif "post" in openapi_schema["paths"][route]:
-    #             openapi_schema["paths"][route]["post"]["x-codeSamples"] = code_samples
+    for route in api_routes:
+        code_samples = get_code_samples(route, example_code_dir)
+        if code_samples:
+            # add leading slashes back to the routes
+            route = "/" + route
+            if "get" in openapi_schema["paths"][route]:
+                openapi_schema["paths"][route]["get"]["x-codeSamples"] = code_samples
+            elif "post" in openapi_schema["paths"][route]:
+                openapi_schema["paths"][route]["post"]["x-codeSamples"] = code_samples
 
-    # return openapi_schema
+    return openapi_schema
 
 
 def get_code_samples(route: str, example_code_dir: Path):
