@@ -24,6 +24,7 @@ spec:
             - containerPort: 8080  # Inference API
             - containerPort: 8081  # Management API
             - containerPort: 8082  # Metrics API
+            - containerPort: 5000  # FastAPI serving ReDoc
           env:
             - name: API_ROOT_PATH
               value: "/crop-health"
