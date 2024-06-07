@@ -84,3 +84,5 @@ spec:
     - kind: Service
       name: crop-health-api
       port: 81  # This is the new port configured for FastAPI
+    middlewares:
+    - name: stripprefix-crop-health
