@@ -20,7 +20,7 @@ def custom_openapi_gen(openapi_schema: dict, example_code_dir: Path):
     endpoint_path = "/predictions/{model_name}"
     method = "post"
 
-    # Need to manually define the schema for the model response
+    # Manually define the schema for the model response
     if (
         endpoint_path in openapi_schema["paths"]
         and method in openapi_schema["paths"][endpoint_path]
