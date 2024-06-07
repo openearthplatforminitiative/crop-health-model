@@ -20,40 +20,40 @@ def custom_openapi_gen(openapi_schema: dict, example_code_dir: Path):
     endpoint_path = "/predictions/{model_name}"
     method = "post"
 
-    # # Need to manually define the schema for the model response
-    # if (
-    #     endpoint_path in openapi_schema["paths"]
-    #     and method in openapi_schema["paths"][endpoint_path]
-    # ):
-    #     openapi_schema["paths"][endpoint_path][method]["responses"]["200"] = {
-    #         "description": (
-    #             "Predicted class confidences, all summing to 1.0.",
-    #             " Actual class names may vary by model.",
-    #         ),
-    #         "content": {
-    #             "application/json": {
-    #                 "schema": {
-    #                     "type": "object",
-    #                     "required": ["class1", "class2", "class3"],
-    #                     "properties": {
-    #                         "class1": {
-    #                             "type": "float",
-    #                             "description": "Confidence score for class1.",
-    #                         },
-    #                         "class2": {
-    #                             "type": "float",
-    #                             "description": "Confidence score for class2.",
-    #                         },
-    #                         "class3": {
-    #                             "type": "float",
-    #                             "description": "Confidence score for class3.",
-    #                         },
-    #                     },
-    #                     "example": {"class1": 0.85, "class2": 0.10, "class3": 0.05},
-    #                 }
-    #             }
-    #         },
-    #     }
+    # Need to manually define the schema for the model response
+    if (
+        endpoint_path in openapi_schema["paths"]
+        and method in openapi_schema["paths"][endpoint_path]
+    ):
+        openapi_schema["paths"][endpoint_path][method]["responses"]["200"] = {
+            "description": (
+                "Predicted class confidences, all summing to 1.0.",
+                " Actual class names may vary by model.",
+            ),
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "required": ["class1", "class2", "class3"],
+                        "properties": {
+                            "class1": {
+                                "type": "float",
+                                "description": "Confidence score for class1.",
+                            },
+                            "class2": {
+                                "type": "float",
+                                "description": "Confidence score for class2.",
+                            },
+                            "class3": {
+                                "type": "float",
+                                "description": "Confidence score for class3.",
+                            },
+                        },
+                        "example": {"class1": 0.85, "class2": 0.10, "class3": 0.05},
+                    }
+                }
+            },
+        }
 
     # # Derive the API routes from the OpenAPI schema
     # api_routes = list(openapi_schema["paths"].keys())
