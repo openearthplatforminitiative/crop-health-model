@@ -16,7 +16,7 @@ def custom_openapi_gen(openapi_schema: dict, example_code_dir: Path):
     openapi_schema["info"]["version"] = settings.version
     openapi_schema["info"]["description"] = settings.api_description
 
-    # Endpoint path and method to modify
+    # Manually modify the schema for the /predictions/{model_name} endpoint
     endpoint_path = "/predictions/{model_name}"
     method = "post"
 
