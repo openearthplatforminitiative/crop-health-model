@@ -1,7 +1,7 @@
 from httpx import Client
 
 with Client() as client:
-    # Get the binary model prediction for image cocoa.jpg 
+    # Get the binary model prediction for image cocoa.jpg
     # passed as a binary file in the request body
     response_binary = client.post(
         url="$api_url" + "/predictions/binary",
@@ -12,7 +12,7 @@ with Client() as client:
     # Print the prediction for the healthy class
     print(data_binary["HLT"])
 
-    # Get the single-HLT model prediction for image cocoa.jpg 
+    # Get the single-HLT model prediction for image cocoa.jpg
     # passed as a binary file in the request body
     response_single_HLT = client.post(
         url="$api_url" + "/predictions/single-HLT",
@@ -23,7 +23,7 @@ with Client() as client:
     # Print the top 5 predictions
     print(data_single_HLT)
 
-    # Get the multi-HLT model prediction for image cocoa.jpg 
+    # Get the multi-HLT model prediction for image cocoa.jpg
     # passed as a binary file in the request body
     response_multi_HLT = client.post(
         url="$api_url" + "/predictions/multi-HLT",
