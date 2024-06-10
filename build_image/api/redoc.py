@@ -46,15 +46,13 @@ async def get_openapi_json():
 
 @app.get("/redoc", response_class=HTMLResponse)
 async def redoc():
-    base_url = f"http://127.0.0.1:{settings.uvicorn_port}"
+    if settings.api_domain == "localhost":
+        base_url = f"http://127.0.0.1:{settings.uvicorn_port}"
+    else:
+        base_url = settings.api_url
     redoc_html = f"""
     <!DOCTYPE html>
     <html>
-    <head>
-        <title>ReDoc Documentation</title>
-        <!-- Redoc stylesheet -->
-        <link href="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.css" rel="stylesheet">
-    </head>
     <body>
         <!-- Redoc script that builds the page from OpenAPI spec -->
         <redoc spec-url='{base_url}/torchserve-openapi.json'></redoc>

@@ -18,7 +18,7 @@ spec:
         prometheus.io/path: "/metrics"
     spec:
       containers:
-        - image: ghcr.io/openearthplatforminitiative/crop-health-model:0.0.5
+        - image: ghcr.io/openearthplatforminitiative/crop-health-model:0.0.6
           name: crop-health-api
           ports:
             - containerPort: 8080  # Inference API
@@ -29,7 +29,7 @@ spec:
             - name: API_ROOT_PATH
               value: "/crop-health"
             - name: VERSION
-              value: 0.0.5
+              value: 0.0.6
             - name: API_DOMAIN
               valueFrom:
                 configMapKeyRef:
@@ -71,7 +71,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: PathPrefix(`/crop-health/redoc`)
+    match: PathPrefix(`/crop-health/redoc`) && Path(`/crop-health/torchserve-openapi.json`)
     priority: 2
     services:
     - kind: Service
