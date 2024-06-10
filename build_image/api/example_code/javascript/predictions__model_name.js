@@ -1,32 +1,47 @@
-const image = new FormData();
-image.append('file', fs.createReadStream('cocoa.jpg'));
+const imageData = fs.readFileSync('cocoa.jpg');
 
-const response_binary = await fetch(
-    "$api_url" + "/predictions/binary", {
-      method: "POST",
-      body: image
-    }
-  );
-const data_binary = await response_binary.json();
-  
-console.log(data_binary.HLT);
-
-const response_single_HLT = await fetch(
-    "$api_url" + "/predictions/single-HLT", {
-      method: "POST",
-      body: image
-    }
-  );
-const data_single_HLT = await response_single_HLT.json();
-
-console.log(data_single_HLT);
-
-const response_multi_HLT = await fetch(
-      "$api_url" + "/predictions/multi-HLT", {
-        method: "POST",
-        body: image
-      }
+// Get the binary model prediction for image cocoa.jpg 
+// passed as a binary file in the request body
+fetch.then(async fetch => {
+    const response_binary = await fetch(
+        "https://api-test.openepi.io/crop-health/predictions/binary",
+        {
+            method: "POST",
+            body: imageData,
+        }
     );
-const data_multi_HLT = await response_multi_HLT.json();
-  
-console.log(data_multi_HLT);
+    const data_binary = await response_binary.json();
+    // Print the prediction for the healthy class
+    console.log(data_binary.HLT);
+});
+
+
+// Get the single-HLT model prediction for image cocoa.jpg 
+// passed as a binary file in the request body
+fetch.then(async fetch => {
+  const response_single = await fetch(
+      "https://api-test.openepi.io/crop-health/predictions/single-HLT",
+      {
+          method: "POST",
+          body: imageData,
+      }
+  );
+  const data_single = await response_single.json();
+  // Print the top 5 predictions
+  console.log(data_single);
+});
+
+// Get the multi-HLT prediction for image cocoa.jpg 
+// passed as a binary file in the request body
+fetch.then(async fetch => {
+  const response_multi = await fetch(
+      "https://api-test.openepi.io/crop-health/predictions/multi-HLT",
+      {
+          method: "POST",
+          body: imageData,
+      }
+  );
+  const data_multi = await response_multi.json();
+  // Print the top 5 predictions
+  console.log(data_multi);
+});
