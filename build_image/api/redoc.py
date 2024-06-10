@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 import requests
 from api.custom_openapi import custom_openapi_gen
+from api.settings import settings
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 
@@ -45,6 +46,7 @@ async def get_openapi_json():
 
 @app.get("/redoc", response_class=HTMLResponse)
 async def redoc():
+    base_url = f"http://127.0.0.1:{settings.uvicorn_port}"
     redoc_html = f"""
     <!DOCTYPE html>
     <html>
@@ -55,7 +57,7 @@ async def redoc():
     </head>
     <body>
         <!-- Redoc script that builds the page from OpenAPI spec -->
-        <redoc spec-url='/torchserve-openapi.json'></redoc>
+        <redoc spec-url='{base_url}/torchserve-openapi.json'></redoc>
         <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"></script>
     </body>
     </html>
@@ -66,4 +68,4 @@ async def redoc():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host=settings.uvicorn_host, port=settings.uvicorn_port)
