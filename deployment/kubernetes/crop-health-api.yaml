@@ -72,6 +72,7 @@ spec:
   routes:
   - kind: Rule
     match: PathPrefix(`/crop-health/redoc`)
+    priority: 2
     services:
     - kind: Service
       name: crop-health-api
@@ -80,6 +81,7 @@ spec:
     - name: stripprefix-crop-health
   - kind: Rule
     match: PathPrefix(`/crop-health`) && !PathPrefix(`/crop-health/metrics`)
+    priority: 1
     services:
     - kind: Service
       name: crop-health-api
