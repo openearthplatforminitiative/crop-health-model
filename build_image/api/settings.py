@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    version: str = "0.0.1"
+    version: str = "0.0.5"
     title: str = "Crop Health API"
     uvicorn_port: int = 5000
     uvicorn_host: str = "0.0.0.0"
