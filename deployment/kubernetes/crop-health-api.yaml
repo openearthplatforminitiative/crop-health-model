@@ -71,18 +71,18 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: PathPrefix(`/crop-health`) && !PathPrefix(`/crop-health/metrics`)
-    services:
-    - kind: Service
-      name: crop-health-api
-      port: 80
-    middlewares:
-    - name: stripprefix-crop-health
-  - kind: Rule
     match: PathPrefix(`/crop-health/redoc`)
     services:
     - kind: Service
       name: crop-health-api
       port: 81  # This is the new port configured for FastAPI
+    middlewares:
+    - name: stripprefix-crop-health
+  - kind: Rule
+    match: PathPrefix(`/crop-health`) && !PathPrefix(`/crop-health/metrics`)
+    services:
+    - kind: Service
+      name: crop-health-api
+      port: 80
     middlewares:
     - name: stripprefix-crop-health
