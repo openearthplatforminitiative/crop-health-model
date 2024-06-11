@@ -40,7 +40,7 @@ app = FastAPI(openapi_url=None, lifespan=app_lifespan)
 app.mount("/static", StaticFiles(directory="api/assets"), name="static")
 
 
-@app.get("/torchserve-openapi.json")
+@app.get("/openapi.json")
 async def get_openapi_json():
     if openapi_json_cache:
         return openapi_json_cache
@@ -55,7 +55,7 @@ async def redoc():
     <html>
     <body>
         <!-- Redoc script that builds the page from OpenAPI spec -->
-        <redoc spec-url='{settings.api_url}/torchserve-openapi.json'></redoc>
+        <redoc spec-url='{settings.api_url}/openapi.json'></redoc>
         <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"></script>
     </body>
     </html>

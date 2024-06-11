@@ -71,7 +71,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: PathPrefix(`/crop-health/redoc`) || Path(`/crop-health/torchserve-openapi.json`) || Path(`/crop-health/static`)
+    match: PathPrefix(`/crop-health/redoc`) || Path(`/crop-health/openapi.json`) || Path(`/crop-health/static`)
     priority: 2
     services:
     - kind: Service
