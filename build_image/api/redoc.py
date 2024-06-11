@@ -6,6 +6,7 @@ from api.custom_openapi import custom_openapi_gen
 from api.settings import settings
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 example_code_dir = pathlib.Path(__file__).parent / "example_code"
 openapi_json_cache = None
@@ -35,8 +36,11 @@ async def app_lifespan(app):
 
 app = FastAPI(openapi_url=None, lifespan=app_lifespan)
 
+# The OpenEPI logo needs to be served as a static file since it is referenced in the OpenAPI schema
+app.mount("/static", StaticFiles(directory="api/assets"), name="static")
 
-@app.get("/torchserve-openapi.json")
+
+@app.get("/openapi.json")
 async def get_openapi_json():
     if openapi_json_cache:
         return openapi_json_cache
@@ -46,16 +50,12 @@ async def get_openapi_json():
 
 @app.get("/redoc", response_class=HTMLResponse)
 async def redoc():
-    if settings.api_domain == "localhost":
-        base_url = f"http://127.0.0.1:{settings.uvicorn_port}"
-    else:
-        base_url = settings.api_url
     redoc_html = f"""
     <!DOCTYPE html>
     <html>
     <body>
         <!-- Redoc script that builds the page from OpenAPI spec -->
-        <redoc spec-url='{base_url}/torchserve-openapi.json'></redoc>
+        <redoc spec-url='{settings.api_url}/openapi.json'></redoc>
         <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"></script>
     </body>
     </html>
