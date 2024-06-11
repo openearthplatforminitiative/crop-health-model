@@ -10,7 +10,7 @@ supported_languages = {"cURL": "sh", "JavaScript": "js", "Python": "py"}
 
 def custom_openapi_gen(openapi_schema: dict, example_code_dir: Path):
     openapi_schema["info"]["x-logo"] = {
-        "url": f"http://127.0.0.1:{settings.uvicorn_port}/static/icons/open-epi-logo.svg"
+        "url": f"{settings.api_url}/static/icons/open-epi-logo.svg"
     }
     openapi_schema["info"]["title"] = settings.title
     openapi_schema["info"]["version"] = settings.version
