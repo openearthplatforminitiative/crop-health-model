@@ -6,6 +6,7 @@ from api.custom_openapi import custom_openapi_gen
 from api.settings import settings
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 example_code_dir = pathlib.Path(__file__).parent / "example_code"
 openapi_json_cache = None
@@ -34,6 +35,9 @@ async def app_lifespan(app):
 
 
 app = FastAPI(openapi_url=None, lifespan=app_lifespan)
+
+# Serve files from the 'api/assets' directory under the '/static' URL path
+app.mount("/static", StaticFiles(directory="api/assets"), name="static")
 
 
 @app.get("/torchserve-openapi.json")
