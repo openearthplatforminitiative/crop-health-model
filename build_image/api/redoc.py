@@ -36,7 +36,7 @@ async def app_lifespan(app):
 
 app = FastAPI(openapi_url=None, lifespan=app_lifespan)
 
-# Serve files from the 'api/assets' directory under the '/static' URL path
+# The OpenEPI logo needs to be served as a static file since it is referenced in the OpenAPI schema
 app.mount("/static", StaticFiles(directory="api/assets"), name="static")
 
 
