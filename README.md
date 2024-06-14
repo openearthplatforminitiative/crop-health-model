@@ -87,4 +87,5 @@ torch-model-archiver --model-name single-HLT --version 2.0 --model-file model_sc
 ```
 For this command, only the `--model-name` and `--version` need to be adjsuted for each case.
 
-Torch Model Archiver will create a `single-HLT.mar` file inside `tb_logs/single_HLT/version_2`. To deploy this model, simply add it to the `model_store` folder inside `torch_serve` in the [crop-health-api](https://github.com/openearthplatforminitiative/crop-health-api) repository.
+Torch Model Archiver will create a `single-HLT.mar` file inside `tb_logs/single_HLT/version_2`. To deploy this model, first add it to the `model_store` folder inside `torch_serve` in the [crop-health-api](https://github.com/openearthplatforminitiative/crop-health-api) repository.
+Then add a mapping from name to filename in the `torch_serve/docker/config.properties` file, under the `load_models` field.
