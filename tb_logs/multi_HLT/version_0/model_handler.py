@@ -3,6 +3,7 @@ from ts.torch_handler.image_classifier import ImageClassifier
 
 
 class CustomHandler(ImageClassifier):
+    topk = 17
     image_processing = transforms.Compose(
         [
             transforms.Resize(interpolation=2, size=256),
