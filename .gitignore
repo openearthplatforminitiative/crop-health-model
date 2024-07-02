@@ -10,7 +10,7 @@ __pycache__/
 .data/
 
 # checkpoints
-tb_logs/**/checkpoints/
+tb_logs/**/checkpoints/*.ckpt
 
 # ignore .mar files in logs
 tb_logs/**/*.mar
