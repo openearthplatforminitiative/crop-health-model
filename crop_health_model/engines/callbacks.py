@@ -222,7 +222,7 @@ class CustomHandler(ImageClassifier):
 
     def compute_top_k(self, num_classes: int) -> int:
         """Computes the top-k value based on the number of classes."""
-        return min(num_classes, 5)
+        return num_classes
 
 
 class SaveSimplifiedCheckpoint(Callback):
